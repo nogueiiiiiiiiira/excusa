@@ -1,0 +1,75 @@
+
+-- 1. CREATE DATABASE (if not exists)
+CREATE DATABASE IF NOT EXISTS salon;
+USE salon;
+
+-- 2. CREATE TABLES
+
+-- Clients table
+CREATE TABLE IF NOT EXISTS clients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Procedures (services) table
+CREATE TABLE IF NOT EXISTS procedures (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(80) NOT NULL,
+    description TEXT,
+    default_duration INT COMMENT 'estimated duration in minutes',
+    default_price DECIMAL(10,2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Appointments table
+CREATE TABLE IF NOT EXISTS appointments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    client_id INT NOT NULL,
+    procedure_id INT NOT NULL,
+    datetime DATETIME NOT NULL,
+    estimated_duration INT COMMENT 'actual estimated duration for this appointment (minutes)',
+    charged_price DECIMAL(10,2) COMMENT 'negotiated price for this service',
+    status ENUM('scheduled','confirmed','done','canceled','missed','late') DEFAULT 'scheduled',
+    notes TEXT COMMENT 'specific notes (e.g., client was late, etc.)',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE,
+    FOREIGN KEY (procedure_id) REFERENCES procedures(id) ON DELETE RESTRICT
+);
+
+-- 3. INSERT SAMPLE DATA
+
+-- Clients
+INSERT INTO clients (name, phone, email, notes) VALUES
+('Ana Silva', '(11) 99999-1111', 'ana@email.com', 'Likes modern haircuts'),
+('Carlos Souza', '(11) 99999-2222', 'carlos@email.com', 'Always 10 min late'),
+('Mariana Oliveira', '(11) 99999-3333', 'mariana@email.com', 'Loyal client, colors every 2 months'),
+('João Pereira', '(11) 99999-4444', 'joao@email.com', ''),
+('Fernanda Lima', '(11) 99999-5555', 'fernanda@email.com', 'Already missed 2 times');
+
+-- Procedures
+INSERT INTO procedures (name, description, default_duration, default_price) VALUES
+('Women''s Cut', 'Scissor and/or clipper cut', 45, 70.00),
+('Coloring', 'Dye or highlights', 90, 150.00),
+('Blowout', 'Progressive blowout or styling', 30, 40.00),
+('Men''s Cut', 'Basic men''s haircut', 30, 50.00),
+('Hair Treatment', 'Hydration, nutrition or reconstruction', 60, 80.00);
+
+-- Appointments (including various statuses)
+INSERT INTO appointments (client_id, procedure_id, datetime, estimated_duration, charged_price, status, notes) VALUES
+(1, 1, '2026-08-20 10:00:00', 45, 70.00, 'confirmed', ''),
+(2, 2, '2026-08-20 14:00:00', 90, 140.00, 'scheduled', 'Client tends to be late'),
+(3, 5, '2026-08-21 09:30:00', 60, 80.00, 'done', ''),
+(1, 3, '2026-08-22 16:00:00', 30, 40.00, 'late', 'Arrived 15 min late'),
+(4, 4, '2026-08-23 11:00:00', 30, 50.00, 'missed', 'Did not show up and did not cancel'),
+(5, 2, '2026-08-24 15:00:00', 90, 160.00, 'canceled', 'Client rescheduled'),
+(2, 1, '2026-08-25 09:00:00', 45, 65.00, 'done', ''),
+(3, 3, '2026-08-26 13:30:00', 30, 40.00, 'scheduled', ''),
+(5, 5, '2026-08-27 10:30:00', 60, 85.00, 'confirmed', ''),
+(4, 4, '2026-08-28 17:00:00', 30, 50.00, 'scheduled', '');

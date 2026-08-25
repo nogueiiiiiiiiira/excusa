@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { useMemo } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 
 const navigationItems = [
   { to: "/", label: "Home", end: true },
@@ -9,12 +10,42 @@ const navigationItems = [
   { to: "/history/system", label: "System History" },
 ];
 
-const Layout = ({ children }) => (
-  <>
+const watermarkColors = ["#2f8f46", "#2474c6", "#c43d3d"];
+
+const createWatermarkItems = () =>
+  Array.from({ length: 300 }, (_, index) => ({
+    id: index,
+    left: `${Math.random() * 124 - 12}%`,
+    top: `${Math.random() * 96}%`,
+    rotation: `${Math.round(Math.random() * 360 - 180)}deg`,
+    color: watermarkColors[Math.floor(Math.random() * watermarkColors.length)],
+  }));
+
+const Layout = ({ children }) => {
+  const { pathname } = useLocation();
+  const watermarkItems = useMemo(createWatermarkItems, [pathname]);
+
+  return (
+    <>
+    <div className="watermark" aria-hidden="true">
+      {watermarkItems.map((item) => (
+        <span
+          key={item.id}
+          style={{
+            left: item.left,
+            top: item.top,
+            transform: `rotate(${item.rotation})`,
+            color: item.color,
+          }}
+        >
+          Karen Nogueira
+        </span>
+      ))}
+    </div>
     <header className="topbar">
       <nav className="navigation" aria-label="Main navigation">
-        <a className="brand" href="/" aria-label="Karen Nogueira's Salon Home">
-          Karen Nogueira's Salon
+        <a className="brand" href="/" aria-label="Salon Manager Home">
+          Salon Manager
         </a>
         <div className="navigation-links">
           {navigationItems.map((item) => (
@@ -33,7 +64,8 @@ const Layout = ({ children }) => (
       </nav>
     </header>
     <main className="page-content">{children}</main>
-  </>
-);
+    </>
+  );
+};
 
 export default Layout;

@@ -9,6 +9,7 @@ const ProceduresList = () => {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
+  const [selectedProcedure, setSelectedProcedure] = useState(null);
 
   useEffect(() => {
     const fetchAllProcedures = async () => {
@@ -51,7 +52,10 @@ const ProceduresList = () => {
 
   return (
     <div>
-      <h1>List of Procedures</h1>
+      <div className="page-heading">
+        <h1>List of Procedures</h1>
+        <Link className="addHome" to="/procedures/add">Add New Procedure</Link>
+      </div>
       {loading && <p>Loading procedures...</p>}
       {error && <p role="alert">{error}</p>}
       {message && <p role="status">{message}</p>}
@@ -67,36 +71,29 @@ const ProceduresList = () => {
         )}
         {filteredProcedures.map((procedure) => (
           <div key={procedure.id} className="procedure">
-            <h2>{procedure.name}</h2>
-            <p>{procedure.description}</p>
-            <p>Duration: {procedure.default_duration} min</p>
-            <p>Price: {formatCurrency(procedure.default_price)}</p>
-            <button
-              className="delete"
-              type="button"
-              onClick={() => handleDelete(procedure.id)}
-            >
-              Delete
-            </button>
-            <button className="update">
-              <Link
-                to={`/procedures/update/${procedure.id}`}
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                Update
-              </Link>
-            </button>
+            <h2><strong>Name:</strong> {procedure.name}</h2>
+            <p className="card-summary"><strong>Description:</strong> {procedure.description || "Not informed"}</p>
+            <p><strong>Duration:</strong> {procedure.default_duration} min</p>
+            <p><strong>Price:</strong> {formatCurrency(procedure.default_price)}</p>
+            <div className="card-actions">
+              <button className="details-button" type="button" onClick={() => setSelectedProcedure(procedure)}>Details</button>
+              <button className="delete" type="button" onClick={() => handleDelete(procedure.id)}>Delete</button>
+              <Link className="update" to={`/procedures/update/${procedure.id}`}>Update</Link>
+            </div>
           </div>
         ))}
       </div>
-      <button className="addHome" type="button">
-        <Link
-          to="/procedures/add"
-          style={{ color: "inherit", textDecoration: "none" }}
-        >
-          Add New Procedure
-        </Link>
-      </button>
+      {selectedProcedure && (
+        <div className="modal-backdrop" role="presentation" onClick={() => setSelectedProcedure(null)}>
+          <section className="details-modal" role="dialog" aria-modal="true" aria-labelledby="procedure-details-title" onClick={(event) => event.stopPropagation()}>
+            <button className="modal-close" type="button" aria-label="Close details" onClick={() => setSelectedProcedure(null)}>×</button>
+            <h2 id="procedure-details-title">{selectedProcedure.name}</h2>
+            <p><strong>Description:</strong> {selectedProcedure.description || "Not informed"}</p>
+            <p><strong>Duration:</strong> {selectedProcedure.default_duration} min</p>
+            <p><strong>Price:</strong> {formatCurrency(selectedProcedure.default_price)}</p>
+          </section>
+        </div>
+      )}
     </div>
   );
 };

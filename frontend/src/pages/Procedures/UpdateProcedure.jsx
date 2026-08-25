@@ -117,7 +117,7 @@ const UpdateProcedure = () => {
         value={procedure.default_price}
         onChange={handleChange}
       />
-      <button type="submit" disabled={loading || saving}>
+      <button className="update-submit" type="submit" disabled={loading || saving}>
         {saving ? "Saving..." : "Update"}
       </button>
       {error && <span role="alert">{error}</span>}

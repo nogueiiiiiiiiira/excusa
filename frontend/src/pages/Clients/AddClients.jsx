@@ -1,6 +1,10 @@
-import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../../api";
+import {
+  brazilianPhonePattern,
+  formatBrazilianPhone,
+} from "../../formUtils";
 
 const AddClients = () => {
   const [client, setClient] = useState({
@@ -9,35 +13,89 @@ const AddClients = () => {
     email: "",
     notes: "",
   });
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+  const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (event) => {
-    setClient((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+    const value =
+      event.target.name === "phone"
+        ? formatBrazilianPhone(event.target.value)
+        : event.target.value;
+
+    setClient((prev) => ({ ...prev, [event.target.name]: value }));
   };
 
-  const handleClick = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!window.confirm("Do you want to add this client?")) {
+      return;
+    }
+
+    setError("");
+    setSaving(true);
+
     try {
-      await axios.post("http://localhost:5000/clients", client);
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-      setError(true);
+      await api.post("/clients", client);
+      window.alert("Client added successfully.");
+      navigate("/clients");
+    } catch (requestError) {
+      console.error("Failed to add client:", requestError.message);
+      setError(
+        requestError.response?.data?.error || "Unable to add the client.",
+      );
+    } finally {
+      setSaving(false);
     }
   };
 
   return (
-    <div className="form">
+    <form className="form" onSubmit={handleSubmit}>
       <h1>Add New Client</h1>
-      <input type="text" placeholder="Ex: Karen Nogueira" name="name" onChange={handleChange} />
-      <input type="phone" placeholder="Ex: (11) 99999-9999" name="phone" onChange={handleChange} />
-      <input type="email" placeholder="Ex: karen.nogueira@example.com" name="email" onChange={handleChange} />
-      <input type="text" placeholder="Ex: Karen Nogueira is so nice" name="notes" onChange={handleChange} />
-      <button onClick={handleClick}>Add</button>
-      {error && "Something went wrong!"}
-      <Link to="/">See all clients</Link>
-    </div>
+      <label htmlFor="name">Name</label>
+      <input
+        type="text"
+        placeholder="Ex: Karen Cristini Nogueira"
+        name="name"
+        value={client.name}
+        onChange={handleChange}
+        required
+      />
+      <label htmlFor="phone">Phone</label>
+      <input
+        type="tel"
+        placeholder="Ex: (31) 9 9999-9999"
+        name="phone"
+        value={client.phone}
+        onChange={handleChange}
+        pattern={brazilianPhonePattern}
+        title="Enter a valid Brazilian phone number, such as (41) 99999-9999."
+        maxLength="16"
+        inputMode="numeric"
+        autoComplete="tel"
+      />
+      <label htmlFor="email">Email</label>
+      <input
+        type="email"
+        placeholder="Ex: karen.nogueira@example.com"
+        name="email"
+        value={client.email}
+        onChange={handleChange}
+      />
+      <label htmlFor="notes">Notes</label>
+      <textarea
+        placeholder="Ex: Prefers morning appointments"
+        name="notes"
+        value={client.notes}
+        onChange={handleChange}
+      />
+      <button type="submit" disabled={saving}>
+        {saving ? "Saving..." : "Add"}
+      </button>
+      {error && <span role="alert">{error}</span>}
+      <Link to="/clients">See all clients</Link>
+    </form>
   );
 };
 

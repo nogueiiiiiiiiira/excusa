@@ -8,6 +8,7 @@ const ClientsList = () => {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
+  const [selectedClient, setSelectedClient] = useState(null);
 
   useEffect(() => {
     const fetchAllClients = async () => {
@@ -45,7 +46,10 @@ const ClientsList = () => {
 
   return (
     <div>
-      <h1>List of Clients</h1>
+      <div className="page-heading">
+        <h1>List of Clients</h1>
+        <Link className="addHome" to="/clients/add">Add New Client</Link>
+      </div>
       {loading && <p>Loading clients...</p>}
       {error && <p role="alert">{error}</p>}
       {message && <p role="status">{message}</p>}
@@ -61,36 +65,29 @@ const ClientsList = () => {
         )}
         {filteredClients.map((client) => (
           <div key={client.id} className="client">
-            <h2>{client.name}</h2>
-            <p>{client.phone}</p>
-            <p>{client.email}</p>
-            <p>{client.notes}</p>
-            <button
-              className="delete"
-              type="button"
-              onClick={() => handleDelete(client.id)}
-            >
-              Delete
-            </button>
-            <button className="update">
-              <Link
-                to={`/clients/update/${client.id}`}
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                Update
-              </Link>
-            </button>
+            <h2><strong>Name:</strong> {client.name}</h2>
+            <p><strong>Phone:</strong> {client.phone || "Not informed"}</p>
+            <p><strong>Email:</strong> {client.email || "Not informed"}</p>
+            <p className="card-summary"><strong>Notes:</strong> {client.notes || "Not informed"}</p>
+            <div className="card-actions">
+              <button className="details-button" type="button" onClick={() => setSelectedClient(client)}>Details</button>
+              <button className="delete" type="button" onClick={() => handleDelete(client.id)}>Delete</button>
+              <Link className="update" to={`/clients/update/${client.id}`}>Update</Link>
+            </div>
           </div>
         ))}
       </div>
-      <button className="addHome" type="button">
-        <Link
-          to="/clients/add"
-          style={{ color: "inherit", textDecoration: "none" }}
-        >
-          Add New Client
-        </Link>
-      </button>
+      {selectedClient && (
+        <div className="modal-backdrop" role="presentation" onClick={() => setSelectedClient(null)}>
+          <section className="details-modal" role="dialog" aria-modal="true" aria-labelledby="client-details-title" onClick={(event) => event.stopPropagation()}>
+            <button className="modal-close" type="button" aria-label="Close details" onClick={() => setSelectedClient(null)}>×</button>
+            <h2 id="client-details-title">{selectedClient.name}</h2>
+            <p><strong>Phone:</strong> {selectedClient.phone || "Not informed"}</p>
+            <p><strong>Email:</strong> {selectedClient.email || "Not informed"}</p>
+            <p><strong>Notes:</strong> {selectedClient.notes || "Not informed"}</p>
+          </section>
+        </div>
+      )}
     </div>
   );
 };

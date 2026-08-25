@@ -94,7 +94,7 @@ const AddClients = () => {
         {saving ? "Saving..." : "Add"}
       </button>
       {error && <span role="alert">{error}</span>}
-      <Link to="/clients">See all clients</Link>
+      <Link className="back-link" to="/clients">See all clients</Link>
     </form>
   );
 };

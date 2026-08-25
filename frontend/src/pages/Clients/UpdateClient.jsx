@@ -124,11 +124,11 @@ const UpdateClient = () => {
         value={client.notes}
         onChange={handleChange}
       />
-      <button type="submit" disabled={loading || saving}>
+      <button className="update-submit" type="submit" disabled={loading || saving}>
         {saving ? "Saving..." : "Update"}
       </button>
       {error && <span role="alert">{error}</span>}
-      <Link to="/clients">See all clients</Link>
+      <Link className="back-link" to="/clients">See all clients</Link>
     </form>
   );
 };

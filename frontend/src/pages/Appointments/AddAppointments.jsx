@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../../api";
 import {
   appointmentStatuses,
@@ -77,7 +77,10 @@ const AddAppointments = () => {
     } catch (requestError) {
       console.error("Failed to add appointment:", requestError.message);
       setError(
-        requestError.response?.data?.error || "Unable to add the appointment.",
+        requestError.response?.data?.error ||
+          (requestError.request
+            ? "Unable to reach the server. Make sure the backend is running."
+            : "Unable to add the appointment."),
       );
     } finally {
       setSaving(false);
@@ -178,7 +181,8 @@ const AddAppointments = () => {
       <button type="submit" disabled={loadingOptions || saving}>
         {saving ? "Saving..." : "Add Appointment"}
       </button>
-      {error && <span role="alert">{error}</span>}
+      {error && <span className="form-error" role="alert">{error}</span>}
+      <Link className="back-link" to="/appointments">See all appointments</Link>
     </form>
   );
 };

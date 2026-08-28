@@ -15,6 +15,8 @@ const AppointmentsList = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [message, setMessage] = useState("");
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
   useEffect(() => {
     const fetchAllAppointments = async () => {
@@ -61,6 +63,11 @@ const AppointmentsList = () => {
       matchesSearch && (!statusFilter || appointment.status === statusFilter)
     );
   });
+  const totalPages = Math.max(1, Math.ceil(filteredAppointments.length / pageSize));
+  const visibleAppointments = filteredAppointments.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
 
   return (
     <div>
@@ -75,12 +82,18 @@ const AppointmentsList = () => {
         type="search"
         placeholder="Ex: Karen or Haircut"
         value={search}
-        onChange={(event) => setSearch(event.target.value)}
+        onChange={(event) => {
+          setSearch(event.target.value);
+          setCurrentPage(1);
+        }}
       />
       <select
         aria-label="Filter by status"
         value={statusFilter}
-        onChange={(event) => setStatusFilter(event.target.value)}
+        onChange={(event) => {
+          setStatusFilter(event.target.value);
+          setCurrentPage(1);
+        }}
       >
         <option value="">All statuses</option>
         {appointmentStatuses.map((status) => (
@@ -93,7 +106,7 @@ const AppointmentsList = () => {
         {!loading && !error && filteredAppointments.length === 0 && (
           <p className="empty-state">No appointments found.</p>
         )}
-        {filteredAppointments.map((appointment) => (
+        {visibleAppointments.map((appointment) => (
           <div key={appointment.id} className="appointment">
             <h2>{appointment.client_name}</h2>
             <p><strong>Procedure:</strong> {appointment.procedure_name}</p>
@@ -107,6 +120,17 @@ const AppointmentsList = () => {
           </div>
         ))}
       </div>
+      {totalPages > 1 && (
+        <nav className="pagination" aria-label="Appointments pages">
+          <button type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((page) => page - 1)}>
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((page) => page + 1)}>
+            Next
+          </button>
+        </nav>
+      )}
       {selectedAppointment && (
         <div className="modal-backdrop" role="presentation" onClick={() => setSelectedAppointment(null)}>
           <section className="details-modal" role="dialog" aria-modal="true" aria-labelledby="appointment-details-title" onClick={(event) => event.stopPropagation()}>

@@ -10,6 +10,8 @@ const ProceduresList = () => {
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
   const [selectedProcedure, setSelectedProcedure] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
   useEffect(() => {
     const fetchAllProcedures = async () => {
@@ -49,6 +51,11 @@ const ProceduresList = () => {
   const filteredProcedures = procedures.filter((procedure) =>
     procedure.name.toLowerCase().includes(search.toLowerCase()),
   );
+  const totalPages = Math.max(1, Math.ceil(filteredProcedures.length / pageSize));
+  const visibleProcedures = filteredProcedures.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
 
   return (
     <div>
@@ -63,13 +70,16 @@ const ProceduresList = () => {
         type="search"
         placeholder="Ex: Haircut"
         value={search}
-        onChange={(event) => setSearch(event.target.value)}
+        onChange={(event) => {
+          setSearch(event.target.value);
+          setCurrentPage(1);
+        }}
       />
       <div className="procedures">
         {!loading && !error && filteredProcedures.length === 0 && (
           <p className="empty-state">No procedures found.</p>
         )}
-        {filteredProcedures.map((procedure) => (
+        {visibleProcedures.map((procedure) => (
           <div key={procedure.id} className="procedure">
             <h2><strong>Name:</strong> {procedure.name}</h2>
             <p className="card-summary"><strong>Description:</strong> {procedure.description || "Not informed"}</p>
@@ -83,6 +93,17 @@ const ProceduresList = () => {
           </div>
         ))}
       </div>
+      {totalPages > 1 && (
+        <nav className="pagination" aria-label="Procedures pages">
+          <button type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((page) => page - 1)}>
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((page) => page + 1)}>
+            Next
+          </button>
+        </nav>
+      )}
       {selectedProcedure && (
         <div className="modal-backdrop" role="presentation" onClick={() => setSelectedProcedure(null)}>
           <section className="details-modal" role="dialog" aria-modal="true" aria-labelledby="procedure-details-title" onClick={(event) => event.stopPropagation()}>

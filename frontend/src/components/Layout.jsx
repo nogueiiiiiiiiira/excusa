@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const navigationItems = [
   { to: "/", label: "Home", end: true },
@@ -22,8 +22,7 @@ const createWatermarkItems = () =>
   }));
 
 const Layout = ({ children }) => {
-  const { pathname } = useLocation();
-  const watermarkItems = useMemo(createWatermarkItems, [pathname]);
+  const watermarkItems = useMemo(() => createWatermarkItems(), []);
 
   return (
     <>

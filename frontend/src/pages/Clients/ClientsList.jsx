@@ -9,6 +9,8 @@ const ClientsList = () => {
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
   const [selectedClient, setSelectedClient] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
   useEffect(() => {
     const fetchAllClients = async () => {
@@ -43,6 +45,11 @@ const ClientsList = () => {
   const filteredClients = clients.filter((client) =>
     client.name.toLowerCase().includes(search.toLowerCase()),
   );
+  const totalPages = Math.max(1, Math.ceil(filteredClients.length / pageSize));
+  const visibleClients = filteredClients.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
 
   return (
     <div>
@@ -57,13 +64,16 @@ const ClientsList = () => {
         type="search"
         placeholder="Ex: Karen"
         value={search}
-        onChange={(event) => setSearch(event.target.value)}
+        onChange={(event) => {
+          setSearch(event.target.value);
+          setCurrentPage(1);
+        }}
       />
       <div className="clients">
         {!loading && !error && filteredClients.length === 0 && (
           <p className="empty-state">No clients found.</p>
         )}
-        {filteredClients.map((client) => (
+        {visibleClients.map((client) => (
           <div key={client.id} className="client">
             <h2><strong>Name:</strong> {client.name}</h2>
             <p><strong>Phone:</strong> {client.phone || "Not informed"}</p>
@@ -77,6 +87,17 @@ const ClientsList = () => {
           </div>
         ))}
       </div>
+      {totalPages > 1 && (
+        <nav className="pagination" aria-label="Clients pages">
+          <button type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((page) => page - 1)}>
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((page) => page + 1)}>
+            Next
+          </button>
+        </nav>
+      )}
       {selectedClient && (
         <div className="modal-backdrop" role="presentation" onClick={() => setSelectedClient(null)}>
           <section className="details-modal" role="dialog" aria-modal="true" aria-labelledby="client-details-title" onClick={(event) => event.stopPropagation()}>

@@ -108,7 +108,8 @@ a { color: var(--accent); }
 	border-bottom: 3px solid transparent;
 }
 
-.navigation-link:hover, .navigation-link.active { color: var(--accent); border-bottom-color: transparent; }
+.navigation-link:hover { color: #2474c6; border-bottom-color: transparent; }
+.navigation-link.active { color: var(--accent); border-bottom-color: transparent; }
 
 .page-content { position: relative; z-index: 1; width: min(1180px, 100%); margin: 0 auto; padding: 104px clamp(16px, 4vw, 32px) 40px; }
 
@@ -159,6 +160,8 @@ form.form .update-submit:hover { color: var(--surface); background: var(--accent
 .addHome:hover, .update:hover, .delete:hover, .details-button:hover, .back-link:hover { transform: scale(1.04); }
 .addHome, .back-link { display: inline-flex; align-items: center; justify-content: center; color: #fff; background: #318c4e; text-decoration: none; }
 .back-link:hover { color: #fff; background: #237a42; }
+.form-error { display: block; margin-top: 4px; color: var(--danger); font-weight: 600; }
+.form .back-link { justify-self: start; margin-top: 4px; }
 .history-search { margin-bottom: 8px; }
 .history-details { align-self: flex-start; margin-top: 12px; }
 .modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgb(0 0 0 / 48%); }
@@ -168,6 +171,10 @@ form.form .update-submit:hover { color: var(--surface); background: var(--accent
 .modal-close:hover { color: var(--text); background: var(--surface-muted); }
 .empty-state { padding: 32px 16px; text-align: center; }
 .history-list { display: grid; gap: 16px; }
+.pagination { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 24px 0; }
+.pagination button { min-height: 40px; padding: 8px 14px; color: var(--accent); background: var(--surface); border: 1px solid var(--accent); border-radius: 6px; }
+.pagination button:not(:disabled):hover { color: var(--surface); background: var(--accent); }
+.pagination span { color: var(--text-muted); font-weight: 600; }
 .history-entry { min-height: 0; padding: 14px 16px; }
 .history-entry h2, .history-entry p { margin-top: 0; }
 

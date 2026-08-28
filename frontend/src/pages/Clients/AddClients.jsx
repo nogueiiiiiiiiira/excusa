@@ -43,7 +43,10 @@ const AddClients = () => {
     } catch (requestError) {
       console.error("Failed to add client:", requestError.message);
       setError(
-        requestError.response?.data?.error || "Unable to add the client.",
+        requestError.response?.data?.error ||
+          (requestError.request
+            ? "Unable to reach the server. Make sure the backend is running."
+            : "Unable to add the client."),
       );
     } finally {
       setSaving(false);
@@ -93,7 +96,7 @@ const AddClients = () => {
       <button type="submit" disabled={saving}>
         {saving ? "Saving..." : "Add"}
       </button>
-      {error && <span role="alert">{error}</span>}
+      {error && <span className="form-error" role="alert">{error}</span>}
       <Link className="back-link" to="/clients">See all clients</Link>
     </form>
   );

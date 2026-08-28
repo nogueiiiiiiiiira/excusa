@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../../api";
 import {
   appointmentStatuses,
@@ -198,7 +198,8 @@ const UpdateAppointment = () => {
       <button className="update-submit" type="submit" disabled={loading || saving}>
         {saving ? "Saving..." : "Update"}
       </button>
-      {error && <span role="alert">{error}</span>}
+      {error && <span className="form-error" role="alert">{error}</span>}
+      <Link className="back-link" to="/appointments">See all appointments</Link>   
     </form>
   );
 };

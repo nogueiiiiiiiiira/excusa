@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../../api";
 import { toNumberOrNull } from "../../formUtils";
 
@@ -42,7 +42,10 @@ const AddProcedures = () => {
     } catch (requestError) {
       console.error("Failed to add procedure:", requestError.message);
       setError(
-        requestError.response?.data?.error || "Unable to add the procedure.",
+        requestError.response?.data?.error ||
+          (requestError.request
+            ? "Unable to reach the server. Make sure the backend is running."
+            : "Unable to add the procedure."),
       );
     } finally {
       setSaving(false);
@@ -90,7 +93,8 @@ const AddProcedures = () => {
       <button type="submit" disabled={saving}>
         {saving ? "Saving..." : "Add Procedure"}
       </button>
-      {error && <span role="alert">{error}</span>}
+      {error && <span className="form-error" role="alert">{error}</span>}
+      <Link className="back-link" to="/procedures">See all procedures</Link>    
     </form>
   );
 };

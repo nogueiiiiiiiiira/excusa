@@ -13,6 +13,7 @@ const UpdateClient = () => {
     email: "",
     notes: "",
   });
+  
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -127,7 +128,7 @@ const UpdateClient = () => {
       <button className="update-submit" type="submit" disabled={loading || saving}>
         {saving ? "Saving..." : "Update"}
       </button>
-      {error && <span role="alert">{error}</span>}
+      {error && <span className="form-error" role="alert">{error}</span>}
       <Link className="back-link" to="/clients">See all clients</Link>
     </form>
   );

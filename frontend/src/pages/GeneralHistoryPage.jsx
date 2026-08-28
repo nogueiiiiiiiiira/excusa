@@ -49,6 +49,7 @@ const GeneralHistoryPage = () => {
             <p><strong>Appointment Status:</strong> {entry.appointment_status || "-"}</p>
             <p><strong>Payment Status:</strong> {entry.payment_status || "-"}</p>
             <p><strong>Notes:</strong> {entry.notes || "-"}</p>
+            <br></br>
             <small><strong>Recorded:</strong> {formatDateTime(entry.recorded_at)}</small>
             <button className="details-button history-details" type="button" onClick={() => setSelectedEntry(entry)}>Details</button>
           </article>

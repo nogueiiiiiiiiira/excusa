@@ -17,7 +17,6 @@ const ProceduresList = () => {
     const fetchAllProcedures = async () => {
       try {
         const res = await api.get("/procedures");
-        // Ordenar por ID decrescente (mais recente primeiro)
         const sortedData = [...res.data].sort((a, b) => b.id - a.id);
         setProcedures(sortedData);
       } catch (requestError) {

@@ -16,7 +16,6 @@ const ClientsList = () => {
     const fetchAllClients = async () => {
       try {
         const res = await api.get("/clients");
-        // Ordenar por ID decrescente (mais recente primeiro)
         const sortedData = [...res.data].sort((a, b) => b.id - a.id);
         setClients(sortedData);
       } catch (requestError) {

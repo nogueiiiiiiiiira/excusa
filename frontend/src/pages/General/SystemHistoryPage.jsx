@@ -14,7 +14,6 @@ const SystemHistoryPage = () => {
     const fetchHistory = async () => {
       try {
         const response = await api.get("/history/system");
-        // Ordenar por ID decrescente (mais recente primeiro)
         const sortedData = [...response.data].sort((a, b) => b.id - a.id);
         setHistory(sortedData);
       } catch (requestError) {

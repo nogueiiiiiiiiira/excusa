@@ -22,7 +22,6 @@ const AppointmentsList = () => {
     const fetchAllAppointments = async () => {
       try {
         const res = await api.get("/appointments");
-        // Ordenar por ID decrescente (mais recente primeiro)
         const sortedData = [...res.data].sort((a, b) => b.id - a.id);
         setAppointments(sortedData);
       } catch (requestError) {

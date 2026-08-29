@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/General/HomePage";
 import ClientsList from "./pages/Clients/ClientsList";
 import AddClients from "./pages/Clients/AddClients";
 import UpdateClient from "./pages/Clients/UpdateClient";
@@ -10,9 +10,9 @@ import UpdateProcedure from "./pages/Procedures/UpdateProcedure";
 import AppointmentsList from "./pages/Appointments/AppointmentsList";
 import AddAppointments from "./pages/Appointments/AddAppointments";
 import UpdateAppointment from "./pages/Appointments/UpdateAppointment";
-import NotFoundPage from "./pages/NotFoundPage";
-import GeneralHistoryPage from "./pages/GeneralHistoryPage";
-import SystemHistoryPage from "./pages/SystemHistoryPage";
+import NotFoundPage from "./pages/General/NotFoundPage";
+import GeneralHistoryPage from "./pages/General/GeneralHistoryPage";
+import SystemHistoryPage from "./pages/General/SystemHistoryPage";
 
 function App() {
   return (

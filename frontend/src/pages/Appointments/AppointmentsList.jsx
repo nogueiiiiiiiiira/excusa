@@ -64,9 +64,10 @@ const AppointmentsList = () => {
     );
   });
   const totalPages = Math.max(1, Math.ceil(filteredAppointments.length / pageSize));
+  const visiblePage = Math.min(currentPage, totalPages);
   const visibleAppointments = filteredAppointments.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize,
+    (visiblePage - 1) * pageSize,
+    visiblePage * pageSize,
   );
 
   return (
@@ -80,7 +81,7 @@ const AppointmentsList = () => {
       {message && <p role="status">{message}</p>}
       <input
         type="search"
-        placeholder="Ex: Karen or Haircut"
+        placeholder="Search appointment..."
         value={search}
         onChange={(event) => {
           setSearch(event.target.value);
@@ -122,11 +123,11 @@ const AppointmentsList = () => {
       </div>
       {totalPages > 1 && (
         <nav className="pagination" aria-label="Appointments pages">
-          <button type="button" disabled={currentPage === 1} onClick={() => setCurrentPage((page) => page - 1)}>
+          <button type="button" disabled={visiblePage === 1} onClick={() => setCurrentPage((page) => page - 1)}>
             Previous
           </button>
-          <span>Page {currentPage} of {totalPages}</span>
-          <button type="button" disabled={currentPage === totalPages} onClick={() => setCurrentPage((page) => page + 1)}>
+          <span>Page {visiblePage} of {totalPages}</span>
+          <button type="button" disabled={visiblePage === totalPages} onClick={() => setCurrentPage((page) => page + 1)}>
             Next
           </button>
         </nav>

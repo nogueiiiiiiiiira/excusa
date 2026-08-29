@@ -44,9 +44,6 @@ const SystemHistoryPage = () => {
             <h2><strong>Name:</strong> {entry.entity_name}</h2>
             <p><strong>Entity:</strong> {entry.entity_type}</p>
             <p><strong>Action:</strong> {entry.action}</p>
-            <p><strong>Details:</strong> {entry.details}</p>
-            <br></br>
-            <small><strong>Recorded:</strong> {formatDateTime(entry.recorded_at)}</small>
             <button className="details-button history-details" type="button" onClick={() => setSelectedEntry(entry)}>Details</button>
           </article>
         ))}

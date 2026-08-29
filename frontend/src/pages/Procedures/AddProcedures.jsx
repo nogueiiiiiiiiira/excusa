@@ -66,7 +66,7 @@ const AddProcedures = () => {
       />
       <label htmlFor="description">Description</label>
       <textarea
-        placeholder="Ex: A stylish haircut for men and women"
+        placeholder="Ex: A simple haircut"
         name="description"
         value={procedure.description}
         onChange={handleChange}
@@ -85,7 +85,7 @@ const AddProcedures = () => {
         type="number"
         min="0"
         step="0.01"
-        placeholder="Ex: 20.00"
+        placeholder="Ex: 50.00"
         name="default_price"
         value={procedure.default_price}
         onChange={handleChange}

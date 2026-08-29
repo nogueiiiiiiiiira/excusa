@@ -41,16 +41,9 @@ const GeneralHistoryPage = () => {
       <div className="history-list">
         {filteredHistory.map((entry) => (
           <article className="history-entry" key={entry.id}>
-            <h2><strong>Procedure:</strong> {entry.procedure_name || "Procedure unavailable"}</h2>
-            <p><strong>Action:</strong> {entry.action}</p>
-            <p><strong>Client:</strong> {entry.client_name || "Client unavailable"}</p>
+            <h2><strong>Client:</strong> {entry.client_name || "Client unavailable"}</h2>
             <p><strong>Date and Time:</strong> {formatDateTime(entry.appointment_datetime)}</p>
             <p><strong>Charged Price:</strong> {formatCurrency(entry.charged_price)}</p>
-            <p><strong>Appointment Status:</strong> {entry.appointment_status || "-"}</p>
-            <p><strong>Payment Status:</strong> {entry.payment_status || "-"}</p>
-            <p><strong>Notes:</strong> {entry.notes || "-"}</p>
-            <br></br>
-            <small><strong>Recorded:</strong> {formatDateTime(entry.recorded_at)}</small>
             <button className="details-button history-details" type="button" onClick={() => setSelectedEntry(entry)}>Details</button>
           </article>
         ))}

@@ -187,3 +187,10 @@ form.form .update-submit:hover { color: var(--surface); background: var(--accent
 	.page-heading .addHome { align-self: flex-start; }
 	.client, .procedure, .appointment, .history-entry { padding: 16px; }
 }
+
+.page-heading .addHome {
+  flex: 0 0 auto;
+  padding: 9px 20px;
+  min-height: 42px;
+  white-space: nowrap;
+}

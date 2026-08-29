@@ -17,7 +17,8 @@ const ProceduresList = () => {
     const fetchAllProcedures = async () => {
       try {
         const res = await api.get("/procedures");
-        setProcedures(res.data);
+        const sortedData = [...res.data].sort((a, b) => b.id - a.id);
+        setProcedures(sortedData);
       } catch (requestError) {
         console.error("Failed to load procedures:", requestError.message);
         setError("Unable to load procedures.");

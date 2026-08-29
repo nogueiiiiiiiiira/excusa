@@ -196,10 +196,9 @@ const UpdateAppointment = () => {
         onChange={handleChange}
       />
       <button className="update-submit" type="submit" disabled={loading || saving}>
-        {saving ? "Saving..." : "Update"}
+        {saving ? "Saving..." : "Update Appointment"}
       </button>
       {error && <span className="form-error" role="alert">{error}</span>}
-      <Link className="back-link" to="/appointments">See all appointments</Link>   
     </form>
   );
 };

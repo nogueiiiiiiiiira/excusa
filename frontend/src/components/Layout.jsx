@@ -6,7 +6,7 @@ const navigationItems = [
   { to: "/clients", label: "Clients", end: true },
   { to: "/procedures", label: "Procedures" },
   { to: "/appointments", label: "Appointments" },
-  { to: "/history", label: "History" },
+  { to: "/history", label: "History", end: true },
   { to: "/history/system", label: "System History" },
 ];
 

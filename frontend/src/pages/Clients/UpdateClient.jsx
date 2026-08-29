@@ -126,10 +126,9 @@ const UpdateClient = () => {
         onChange={handleChange}
       />
       <button className="update-submit" type="submit" disabled={loading || saving}>
-        {saving ? "Saving..." : "Update"}
+        {saving ? "Saving..." : "Update Client"}
       </button>
       {error && <span className="form-error" role="alert">{error}</span>}
-      <Link className="back-link" to="/clients">See all clients</Link>
     </form>
   );
 };

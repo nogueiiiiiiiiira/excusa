@@ -91,10 +91,9 @@ const AddProcedures = () => {
         onChange={handleChange}
       />
       <button type="submit" disabled={saving}>
-        {saving ? "Saving..." : "Add Procedure"}
+        {saving ? "Saving..." : "Add New Procedure"}
       </button>
       {error && <span className="form-error" role="alert">{error}</span>}
-      <Link className="back-link" to="/procedures">See all procedures</Link>    
     </form>
   );
 };

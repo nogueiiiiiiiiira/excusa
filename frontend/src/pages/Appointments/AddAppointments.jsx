@@ -179,10 +179,9 @@ const AddAppointments = () => {
         onChange={handleChange}
       />
       <button type="submit" disabled={loadingOptions || saving}>
-        {saving ? "Saving..." : "Add Appointment"}
+        {saving ? "Saving..." : "Add New Appointment"}
       </button>
       {error && <span className="form-error" role="alert">{error}</span>}
-      <Link className="back-link" to="/appointments">See all appointments</Link>
     </form>
   );
 };

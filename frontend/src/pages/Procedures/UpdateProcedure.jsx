@@ -118,10 +118,9 @@ const UpdateProcedure = () => {
         onChange={handleChange}
       />
       <button className="update-submit" type="submit" disabled={loading || saving}>
-        {saving ? "Saving..." : "Update"}
+        {saving ? "Saving..." : "Update Procedure"}
       </button>
       {error && <span className="form-error" role="alert">{error}</span>}
-      <Link className="back-link" to="/procedures">See all procedures</Link>    
     </form>
   );
 };

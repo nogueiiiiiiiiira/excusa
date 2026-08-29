@@ -94,10 +94,9 @@ const AddClients = () => {
         onChange={handleChange}
       />
       <button type="submit" disabled={saving}>
-        {saving ? "Saving..." : "Add"}
+        {saving ? "Saving..." : "Add New Client"}
       </button>
       {error && <span className="form-error" role="alert">{error}</span>}
-      <Link className="back-link" to="/clients">See all clients</Link>
     </form>
   );
 };

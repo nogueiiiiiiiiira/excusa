@@ -22,7 +22,9 @@ const AppointmentsList = () => {
     const fetchAllAppointments = async () => {
       try {
         const res = await api.get("/appointments");
-        setAppointments(res.data);
+        // Ordenar por ID decrescente (mais recente primeiro)
+        const sortedData = [...res.data].sort((a, b) => b.id - a.id);
+        setAppointments(sortedData);
       } catch (requestError) {
         console.error("Failed to load appointments:", requestError.message);
         setError("Unable to load appointments.");
@@ -74,7 +76,7 @@ const AppointmentsList = () => {
     <div>
       <div className="page-heading">
         <h1>List of Appointments</h1>
-        <Link className="addHome" to="/appointments/add">Add Appointment</Link>
+        <Link className="addHome" to="/appointments/add">Add New Appointment</Link>
       </div>
       {loading && <p>Loading appointments...</p>}
       {error && <p role="alert">{error}</p>}

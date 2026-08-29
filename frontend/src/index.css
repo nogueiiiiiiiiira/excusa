@@ -49,9 +49,9 @@ body { margin: 0; min-width: 320px; overflow-x: hidden; color: var(--text); back
 
 .watermark span {
 	position: absolute;
-	font-size: clamp(0.72rem, 0.97vw, 0.92rem);
+	font-size: clamp(0.82rem, 1.07vw, 1.02rem);
 	font-weight: 700;
-	opacity: 0.2;
+	opacity: 0.3;
 	white-space: nowrap;
 }
 
@@ -158,7 +158,7 @@ form.form .update-submit:hover { color: var(--surface); background: var(--accent
 .update:hover { color: var(--surface); background: var(--accent); }
 .addHome, .update, .delete, .details-button, .back-link { transition: color 360ms ease, background-color 360ms ease, border-color 360ms ease, transform 360ms ease; }
 .addHome:hover, .update:hover, .delete:hover, .details-button:hover, .back-link:hover { transform: scale(1.04); }
-.addHome, .back-link { display: inline-flex; align-items: center; justify-content: center; color: #fff; background: #318c4e; text-decoration: none; }
+.addHome, .back-link { display: inline-flex; align-items: center; justify-content: center; color: #fff; background: #318c4e; text-decoration: none; flex: 1 1 0; min-width: 0; }
 .back-link:hover { color: #fff; background: #237a42; }
 .form-error { display: block; margin-top: 4px; color: var(--danger); font-weight: 600; }
 .form .back-link { justify-self: start; margin-top: 4px; }

@@ -97,7 +97,7 @@ const UpdateAppointment = () => {
       );
       setError(
         requestError.response?.data?.error ||
-          "Unable to update the appointment.",
+        "Unable to update the appointment.",
       );
     } finally {
       setSaving(false);

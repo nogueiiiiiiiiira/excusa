@@ -79,9 +79,9 @@ const AddAppointments = () => {
       console.error("Failed to add appointment:", requestError.message);
       setError(
         requestError.response?.data?.error ||
-          (requestError.request
-            ? "Unable to reach the server. Make sure the backend is running."
-            : "Unable to add the appointment."),
+        (requestError.request
+          ? "Unable to reach the server. Make sure the backend is running."
+          : "Unable to add the appointment."),
       );
     } finally {
       setSaving(false);

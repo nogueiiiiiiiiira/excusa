@@ -44,9 +44,9 @@ const AddProcedures = () => {
       console.error("Failed to add procedure:", requestError.message);
       setError(
         requestError.response?.data?.error ||
-          (requestError.request
-            ? "Unable to reach the server. Make sure the backend is running."
-            : "Unable to add the procedure."),
+        (requestError.request
+          ? "Unable to reach the server. Make sure the backend is running."
+          : "Unable to add the procedure."),
       );
     } finally {
       setSaving(false);

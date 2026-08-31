@@ -28,7 +28,7 @@ const SystemHistoryPage = () => {
   const filteredHistory = history.filter((entry) =>
     JSON.stringify(entry).toLowerCase().includes(search.toLowerCase()),
   );
-  
+
   const totalPages = Math.max(1, Math.ceil(filteredHistory.length / pageSize));
   const visiblePage = Math.min(currentPage, totalPages);
   const visibleHistory = filteredHistory.slice(

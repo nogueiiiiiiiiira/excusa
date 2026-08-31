@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api";
-import { formatBrazilianPhone } from "../../formUtils"; 
+import { formatBrazilianPhone } from "../../formUtils";
 
 const AddClients = () => {
   const [client, setClient] = useState({
@@ -44,9 +44,9 @@ const AddClients = () => {
       console.error("Failed to add client:", requestError.message);
       setError(
         requestError.response?.data?.error ||
-          (requestError.request
-            ? "Unable to reach the server. Make sure the backend is running."
-            : "Unable to add the client."),
+        (requestError.request
+          ? "Unable to reach the server. Make sure the backend is running."
+          : "Unable to add the client."),
       );
     } finally {
       setSaving(false);

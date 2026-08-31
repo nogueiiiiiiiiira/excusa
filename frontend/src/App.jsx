@@ -20,7 +20,7 @@ function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
-            <Route path="/" element={<HomePage />} /> 
+            <Route path="/" element={<HomePage />} />
             <Route path="/clients" element={<ClientsList />} />
             <Route path="/clients/add" element={<AddClients />} />
             <Route path="/clients/update/:id" element={<UpdateClient />} />

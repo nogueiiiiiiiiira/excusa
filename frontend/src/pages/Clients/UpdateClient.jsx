@@ -12,7 +12,7 @@ const UpdateClient = () => {
     email: "",
     notes: "",
   });
-  
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

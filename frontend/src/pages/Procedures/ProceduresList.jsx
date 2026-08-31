@@ -44,7 +44,7 @@ const ProceduresList = () => {
       console.error(`Failed to delete procedure ${id}:`, requestError.message);
       setError(
         requestError.response?.data?.error ||
-          "Unable to delete the procedure.",
+        "Unable to delete the procedure.",
       );
     }
   };

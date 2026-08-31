@@ -10,6 +10,7 @@ const navigationItems = [
   { to: "/history/system", label: "System History" },
 ];
 
+// decorative watermark with name repeated in background
 const watermarkColors = ["#2f8f46", "#2474c6", "#c43d3d"];
 
 const createWatermarkItems = () =>

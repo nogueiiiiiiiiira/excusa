@@ -29,6 +29,7 @@ const ProceduresList = () => {
     fetchAllProcedures();
   }, []);
 
+  // delete with confirmation
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this procedure?")) {
       return;
@@ -39,7 +40,6 @@ const ProceduresList = () => {
       setProcedures((current) =>
         current.filter((procedure) => procedure.id !== id),
       );
-      setMessage("Procedure deleted successfully.");
     } catch (requestError) {
       console.error(`Failed to delete procedure ${id}:`, requestError.message);
       setError(
@@ -52,6 +52,7 @@ const ProceduresList = () => {
   const filteredProcedures = procedures.filter((procedure) =>
     procedure.name.toLowerCase().includes(search.toLowerCase()),
   );
+
   const totalPages = Math.max(1, Math.ceil(filteredProcedures.length / pageSize));
   const visiblePage = Math.min(currentPage, totalPages);
   const visibleProcedures = filteredProcedures.slice(

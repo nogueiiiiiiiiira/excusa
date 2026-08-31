@@ -33,12 +33,14 @@ const validateProcedure = (name, duration, price, res) => {
   return true;
 };
 
+// get all procedures
 export const listProcedures = async (req, res) => {
   const [procedures] = await pool.query("SELECT * FROM procedures");
 
   res.json(procedures);
 };
 
+// create a new procedure with validation
 export const createProcedure = async (req, res) => {
   const { name, description, default_duration, default_price } = req.body;
 
@@ -54,6 +56,7 @@ export const createProcedure = async (req, res) => {
   res.status(201).json({ message: "Procedure added!", id: result.insertId });
 };
 
+// update an existing procedure by id
 export const updateProcedure = async (req, res) => {
   const { name, description, default_duration, default_price } = req.body;
 
@@ -76,6 +79,8 @@ export const updateProcedure = async (req, res) => {
   res.json({ message: "Procedure updated!" });
 };
 
+// delete a procedure by id 
+// blocks if referenced by appointments
 export const deleteProcedure = async (req, res) => {
   try {
     const [result] = await pool.query("DELETE FROM procedures WHERE id = ?", [

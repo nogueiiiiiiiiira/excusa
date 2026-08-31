@@ -1,6 +1,7 @@
 import pool from "../config/database.js";
 import { isBrazilianPhone, isValidEmail } from "../validation.js";
 
+// validate client fields before database operations
 const validateClient = (name, phone, email, res) => {
   if (typeof name !== "string" || !name.trim()) {
     res.status(400).json({ error: "Name is required.", field: "name" });
@@ -10,7 +11,7 @@ const validateClient = (name, phone, email, res) => {
 
   if (!isBrazilianPhone(phone)) {
     res.status(400).json({
-      error: "Phone must be a valid Brazilian phone number.",
+      error: "Phone must have at least 10 digits.",
       field: "phone",
     });
 
@@ -26,12 +27,14 @@ const validateClient = (name, phone, email, res) => {
   return true;
 };
 
+// get all clients
 export const listClients = async (req, res) => {
   const [clients] = await pool.query("SELECT * FROM clients");
 
   res.json(clients);
 };
 
+// create a new client with validation
 export const createClient = async (req, res) => {
   const { name, phone, email, notes } = req.body;
 
@@ -47,6 +50,7 @@ export const createClient = async (req, res) => {
   res.status(201).json({ message: "Client added!", id: result.insertId });
 };
 
+// update an existing client by id
 export const updateClient = async (req, res) => {
   const { name, phone, email, notes } = req.body;
 
@@ -69,6 +73,7 @@ export const updateClient = async (req, res) => {
   res.json({ message: "Client updated!" });
 };
 
+// delete a client by id
 export const deleteClient = async (req, res) => {
   const [result] = await pool.query("DELETE FROM clients WHERE id = ?", [
     req.params.id,

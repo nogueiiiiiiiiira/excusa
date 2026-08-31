@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api";
-import {
-  brazilianPhonePattern,
-  formatBrazilianPhone,
-} from "../../formUtils";
+import { formatBrazilianPhone } from "../../formUtils"; 
 
 const AddClients = () => {
   const [client, setClient] = useState({
@@ -13,9 +10,11 @@ const AddClients = () => {
     email: "",
     notes: "",
   });
+
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
+
 
   const handleChange = (event) => {
     const value =
@@ -26,6 +25,7 @@ const AddClients = () => {
     setClient((prev) => ({ ...prev, [event.target.name]: value }));
   };
 
+  // create new with form validation
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -72,8 +72,6 @@ const AddClients = () => {
         name="phone"
         value={client.phone}
         onChange={handleChange}
-        pattern={brazilianPhonePattern}
-        title="Enter a valid Brazilian phone number, such as (41) 99999-9999."
         maxLength="16"
         inputMode="numeric"
         autoComplete="tel"

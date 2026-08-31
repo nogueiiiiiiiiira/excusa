@@ -7,6 +7,7 @@ import {
   paymentStatuses,
 } from "../validation.js";
 
+// validate appointment fields before database operations
 const validateAppointment = (data, res) => {
   const {
     client_id,
@@ -70,6 +71,8 @@ const validateAppointment = (data, res) => {
   return true;
 };
 
+// get all appointments with client and procedure names
+// join
 export const listAppointments = async (req, res) => {
   const query = `SELECT appointments.*, clients.name AS client_name,
     procedures.name AS procedure_name
@@ -82,6 +85,7 @@ export const listAppointments = async (req, res) => {
   res.json(appointments);
 };
 
+// create a new appointment with validation
 export const createAppointment = async (req, res) => {
   if (!validateAppointment(req.body, res)) {
     return;
@@ -116,6 +120,7 @@ export const createAppointment = async (req, res) => {
   res.status(201).json({ message: "Appointment added!", id: result.insertId });
 };
 
+// update an existing appointment by id
 export const updateAppointment = async (req, res) => {
   if (!validateAppointment(req.body, res)) {
     return;
@@ -159,6 +164,7 @@ export const updateAppointment = async (req, res) => {
   res.json({ message: "Appointment updated!" });
 };
 
+// delete an appointment by id
 export const deleteAppointment = async (req, res) => {
   const [result] = await pool.query("DELETE FROM appointments WHERE id = ?", [
     req.params.id,

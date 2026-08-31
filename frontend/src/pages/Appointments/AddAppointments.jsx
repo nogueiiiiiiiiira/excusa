@@ -54,6 +54,7 @@ const AddAppointments = () => {
     }));
   };
 
+  // create new with form validation
   const handleSubmit = async (event) => {
     event.preventDefault();
 

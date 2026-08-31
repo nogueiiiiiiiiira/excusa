@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../../api";
 import {
-  brazilianPhonePattern,
   formatBrazilianPhone,
 } from "../../formUtils";
 
@@ -21,6 +20,8 @@ const UpdateClient = () => {
   const { id: clientId } = useParams();
 
   useEffect(() => {
+
+    // load existing client data for update
     const fetchClient = async () => {
       try {
         const res = await api.get("/clients");
@@ -48,15 +49,12 @@ const UpdateClient = () => {
     fetchClient();
   }, [clientId]);
 
-  const handleChange = (event) => {
-    const value =
-      event.target.name === "phone"
-        ? formatBrazilianPhone(event.target.value)
-        : event.target.value;
 
-    setClient((prev) => ({ ...prev, [event.target.name]: value }));
+  const handleChange = (event) => {
+    setClient((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   };
 
+  // create new with form validation
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -104,8 +102,6 @@ const UpdateClient = () => {
         name="phone"
         value={client.phone}
         onChange={handleChange}
-        pattern={brazilianPhonePattern}
-        title="Enter a valid Brazilian phone number, such as (41) 99999-9999."
         maxLength="16"
         inputMode="numeric"
         autoComplete="tel"

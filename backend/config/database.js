@@ -3,6 +3,7 @@ import mysql from "mysql2/promise";
 
 dotenv.config({ path: new URL("../.env", import.meta.url) });
 
+// database connection configuration
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,

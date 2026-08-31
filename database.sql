@@ -1,11 +1,8 @@
-
--- 1. CREATE DATABASE (if not exists)
 CREATE DATABASE IF NOT EXISTS salon;
 USE salon;
 
--- 2. CREATE TABLES
+-- TABLES
 
--- Clients table
 CREATE TABLE IF NOT EXISTS clients (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -16,7 +13,6 @@ CREATE TABLE IF NOT EXISTS clients (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Procedures (services) table
 CREATE TABLE IF NOT EXISTS procedures (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(80) NOT NULL,
@@ -27,7 +23,6 @@ CREATE TABLE IF NOT EXISTS procedures (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Appointments table
 CREATE TABLE IF NOT EXISTS appointments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     client_id INT NOT NULL,
@@ -43,8 +38,6 @@ CREATE TABLE IF NOT EXISTS appointments (
     FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE,
     FOREIGN KEY (procedure_id) REFERENCES procedures(id) ON DELETE CASCADE
 );
-
--- 3. History tables
 
 CREATE TABLE IF NOT EXISTS general_history (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -69,12 +62,13 @@ CREATE TABLE IF NOT EXISTS system_history (
     recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Prevent normal application users from editing or deleting history records.
+-- prevent normal application users from editing or deleting history records.
 DROP TRIGGER IF EXISTS general_history_no_update;
 DROP TRIGGER IF EXISTS general_history_no_delete;
 DROP TRIGGER IF EXISTS system_history_no_update;
 DROP TRIGGER IF EXISTS system_history_no_delete;
 
+-- prevent updates and deletes on history (append-only)
 DELIMITER //
 
 CREATE TRIGGER general_history_no_update
@@ -105,6 +99,7 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'System history is append-only.';
 END//
 
+-- audit trigger: log appointment creation
 CREATE TRIGGER appointments_history_after_insert
 AFTER INSERT ON appointments
 FOR EACH ROW
@@ -128,6 +123,7 @@ BEGIN
     WHERE c.id = NEW.client_id;
 END//
 
+-- audit trigger: log appointment updates
 CREATE TRIGGER appointments_history_after_update
 AFTER UPDATE ON appointments
 FOR EACH ROW
@@ -151,6 +147,7 @@ BEGIN
     WHERE c.id = NEW.client_id;
 END//
 
+-- audit trigger: log appointment deletion
 CREATE TRIGGER appointments_history_before_delete
 BEFORE DELETE ON appointments
 FOR EACH ROW
@@ -174,6 +171,7 @@ BEGIN
     WHERE c.id = OLD.client_id;
 END//
 
+-- audit triggers: log client crud operations
 CREATE TRIGGER clients_history_after_insert
 AFTER INSERT ON clients
 FOR EACH ROW
@@ -198,6 +196,7 @@ BEGIN
     VALUES ('client', 'deleted', OLD.name, 'Client record deleted.');
 END//
 
+-- audit triggers: log procedure crud operations
 CREATE TRIGGER procedures_history_after_insert
 AFTER INSERT ON procedures
 FOR EACH ROW
@@ -224,9 +223,8 @@ END//
 
 DELIMITER ;
 
--- 4. INSERT SAMPLE DATA
+-- INSERT SAMPLE DATA
 
--- Clients
 INSERT INTO clients (name, phone, email, notes) VALUES
 ('Ana Silva', '(11) 99999-1111', 'ana@email.com', 'Likes modern haircuts'),
 ('Carlos Souza', '(11) 99999-2222', 'carlos@email.com', 'Always 10 min late'),
@@ -234,7 +232,6 @@ INSERT INTO clients (name, phone, email, notes) VALUES
 ('João Pereira', '(11) 99999-4444', 'joao@email.com', ''),
 ('Fernanda Lima', '(11) 99999-5555', 'fernanda@email.com', 'Already missed 2 times');
 
--- Procedures
 INSERT INTO procedures (name, description, default_duration, default_price) VALUES
 ('Women''s Cut', 'Scissor and/or clipper cut', 45, 70.00),
 ('Coloring', 'Dye or highlights', 90, 150.00),
@@ -242,7 +239,6 @@ INSERT INTO procedures (name, description, default_duration, default_price) VALU
 ('Men''s Cut', 'Basic men''s haircut', 30, 50.00),
 ('Hair Treatment', 'Hydration, nutrition or reconstruction', 60, 80.00);
 
--- Appointments (including various statuses)
 INSERT INTO appointments (client_id, procedure_id, datetime, estimated_duration, charged_price, status, notes) VALUES
 (1, 1, '2026-08-20 10:00:00', 45, 70.00, 'confirmed', ''),
 (2, 2, '2026-08-20 14:00:00', 90, 140.00, 'scheduled', 'Client tends to be late'),

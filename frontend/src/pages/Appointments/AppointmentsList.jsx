@@ -12,11 +12,11 @@ const AppointmentsList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [message, setMessage] = useState("");
+  const [statusFilter, setStatusFilter] = useState(""); // filter by appointment status
+  const [message] = useState("");
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 6;
+  const pageSize = 6; // pagination show 6 items per page
 
   useEffect(() => {
     const fetchAllAppointments = async () => {
@@ -34,6 +34,7 @@ const AppointmentsList = () => {
     fetchAllAppointments();
   }, []);
 
+  // delete with confirmation
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this appointment?")) {
       return;
@@ -44,7 +45,7 @@ const AppointmentsList = () => {
       setAppointments((current) =>
         current.filter((appointment) => appointment.id !== id),
       );
-      setMessage("Appointment deleted successfully.");
+
     } catch (requestError) {
       console.error(
         `Failed to delete appointment ${id}:`,
@@ -54,6 +55,7 @@ const AppointmentsList = () => {
     }
   };
 
+  // filter by search term and status
   const filteredAppointments = appointments.filter((appointment) => {
     const matchesSearch =
       `${appointment.client_name} ${appointment.procedure_name}`

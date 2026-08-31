@@ -16,7 +16,9 @@ const currentDirectory = path.dirname(currentFile);
 const frontendDirectory = path.resolve(currentDirectory, "../frontend/dist");
 const frontendEntry = path.join(frontendDirectory, "index.html");
 
+// enable cross-origin requests from frontend
 app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:5173" }));
+// parse json request bodies
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -27,6 +29,7 @@ app.get("/home", (req, res) => {
   res.sendFile(frontendEntry);
 });
 
+// crud operations
 app.use("/clients", clientsRoutes);
 app.use("/procedures", proceduresRoutes);
 app.use("/appointments", appointmentsRoutes);

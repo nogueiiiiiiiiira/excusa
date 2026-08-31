@@ -28,6 +28,7 @@ const ClientsList = () => {
     fetchAllClients();
   }, []);
 
+  // delete with confirmation
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this client?")) {
       return;
@@ -36,7 +37,6 @@ const ClientsList = () => {
     try {
       await api.delete(`/clients/${id}`);
       setClients((current) => current.filter((client) => client.id !== id));
-      setMessage("Client deleted successfully.");
     } catch (requestError) {
       console.error(`Failed to delete client ${id}:`, requestError.message);
       setError("Unable to delete the client.");
@@ -100,6 +100,7 @@ const ClientsList = () => {
           </button>
         </nav>
       )}
+
       {selectedClient && (
         <div className="modal-backdrop" role="presentation" onClick={() => setSelectedClient(null)}>
           <section className="details-modal" role="dialog" aria-modal="true" aria-labelledby="client-details-title" onClick={(event) => event.stopPropagation()}>
